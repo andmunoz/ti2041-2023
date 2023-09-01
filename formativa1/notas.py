@@ -27,7 +27,7 @@ def cargarEvaluacion(nombreArchivo, puntajeTotal, exigencia):
     for registro in archivoNotas:
         # Se lee cada línea del archivo y luego se separa en campos
         registro = registro.rstrip("\\n")
-        campos = registro.split(sep = ';')
+        campos = registro.split(';')
 
         # Creamos el diccionario con los valores iniciales de nota y puntaje
         notaAlumno = {
