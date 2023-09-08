@@ -7,12 +7,20 @@ def calcularNota(min, max, puntaje, exigencia):
 
     # Caso del puntaje menor al de aprobación
     if puntaje < aprobacion: 
-        m = 3.0 / (aprobacion - min)
+        try: 
+            m = 3.0 / (aprobacion - min)
+        except ZeroDivisionError:
+            print('El puntaje no puede ser 0')
+            return 1.0
         n = 1.0 - m * min
 
     # Caso del puntaje mayor al de aprobación
     if puntaje >= aprobacion:
-        m = 3.0 / (max - aprobacion)
+        try: 
+            m = 3.0 / (max - aprobacion)
+        except ZeroDivisionError:
+            print('El puntaje no puede ser 0')
+            return 1.0
         n = 4.0 - m * aprobacion
 
     # Calculamos la nota real y la devolvemos

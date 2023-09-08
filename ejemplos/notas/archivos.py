@@ -22,7 +22,7 @@ def cargarEvaluacion(nombreArchivo, puntajeTotal, exigencia):
             notaAlumno["puntaje"] += int(campos[i])
 
         # Calculamos la nota en base a la exigencia ingresada
-        notaAlumno["nota"] = round(+(0, puntajeTotal, notaAlumno["puntaje"], exigencia), 1)
+        notaAlumno["nota"] = round(calcularNota(0, puntajeTotal, notaAlumno["puntaje"], exigencia), 1)
 
         # Guardamos el diccionario en la lista de alumnos (notas)
         notas.append(notaAlumno)
