@@ -59,5 +59,7 @@ exigencia = input('Ingrese la exigencia (por ejemplo: 60) >> ')
 notas = cargarEvaluacion(nombreArchivo, int(puntajeTotal), int(exigencia))
 
 # Mostramos en pantalla el resultado (sin formatear)
-for alumno in notas:
-    print(alumno)
+# for alumno in notas:
+#    print(alumno)
+
+print(notas)
