@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>JALISCO</title>
+</head>
+<body>
+    <h1>JALISCO</h1>
+
+    <p>Estoy pensando un número entre 1 y 100. ¿Cuál crees que es?</p>
+
+    <form action="/" method="POST">
+        {% csrf_token %}
+        <label for="numero">Tu respuesta:</label>
+        <input type="number" id="numero" name="numero" value="{{ yourNumber|default:'' }}"/>
+        <button type="submit">Responder</button>
+    </form>
+
+    <p>
+        {% if yourNumber > 100 or yourNumber < 1 %}
+            Hey!, estás haciendo trampas, yo te dije un número entre 1 y 100!!!!
+        {% elif myNumber %}
+            Ja ja ja, yo te gano con el {{ myNumber }}!!!!
+        {% endif %}
+    </p>
+</body>
+</html>

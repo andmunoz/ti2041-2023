@@ -1,6 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponse
 
 # Create your views here.
 def index(request):
-    return HttpResponse("Hola cómo estás")
+    if request.method == 'POST':
+        yourNumber = int(request.POST.get('numero', '0'))
+        myNumber = yourNumber + 1
+        return render(request, "jalisco.html", {'yourNumber':yourNumber, 'myNumber':myNumber})
+    return render(request, "jalisco.html")
+ 
