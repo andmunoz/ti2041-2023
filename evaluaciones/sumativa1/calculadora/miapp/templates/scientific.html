@@ -4,4 +4,69 @@
 
 {% block content %}
 <a href="/"><i class="fa-solid fa-chevron-left"></i> Volver</a>
+<br />
+<br />
+<form id="calc" method="post" action="/">
+    {% csrf_token %}
+    <input type="hidden" name="page" value="scientific.html" />
+    <table>
+        <tr>
+            <td colspan="5"><input type="text" id="screen" name="screen" value="{{ resultado }}"></td>
+            <td><button type="button" onclick="clearScreen()">Cls</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(7, false)">7</button></td>
+            <td><button type="button" onclick="putValue(8, false)">8</button></td>
+            <td><button type="button" onclick="putValue(9, false)">9</button></td>
+            <td><button type="button" onclick="putValue('/', true)">/</button></td>
+            <td><button type="button" onclick="setOperation('1/X', true)"><sup>1</sup>/<sub>X</sub></button></td>
+            <td><button type="button" onclick="putValue('**', true)">X<sup>Y</sup></button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(4, false)">4</button></td>
+            <td><button type="button" onclick="putValue(5, false)">5</button></td>
+            <td><button type="button" onclick="putValue(6, false)">6</button></td>
+            <td><button type="button" onclick="putValue('*', true)">*</button></td>
+            <td><button type="button" onclick="setOperation('sqrt(X)', true)">&radic;</button></td>
+            <td><button type="button" onclick="setOperation('sin(X)', true)">sin</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(1, false)">1</button></td>
+            <td><button type="button" onclick="putValue(2, false)">2</button></td>
+            <td><button type="button" onclick="putValue(3, false)">3</button></td>
+            <td><button type="button" onclick="putValue('-', true)">-</button></td>
+            <td><button type="button" onclick="setOperation('log(X)', true)">ln</button></td>
+            <td><button type="button" onclick="setOperation('cos(X)', true)">cos</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue('.', false)">.</button></td>
+            <td><button type="button" onclick="putValue(0, false)">0</button></td>
+            <td><button type="submit">=</button></td>
+            <td><button type="button" onclick="putValue('+', true)">+</button></td>
+            <td><button type="button" onclick="setOperation('log10(X)', true)">log</button></td>
+            <td><button type="button" onclick="setOperation('tan(X)', true)">tan</button></td>
+        </tr>
+    </table>
+</form>
+
+<script>
+    let hasOperation = false;
+
+    function clearScreen() {
+        document.getElementById('screen').value = '';
+    }
+
+    function putValue(value, isOperation) {
+        if (hasOperation && isOperation)
+            document.getElementById('calc').submit();
+        document.getElementById('screen').value += value;
+        hasOperation = isOperation;
+    }
+
+    function setOperation(operation) {
+        let value = document.getElementById('screen').value;
+        document.getElementById('screen').value = operation.replace('X', value);
+        document.getElementById('calc').submit();
+    }
+</script>
 {% endblock %}
