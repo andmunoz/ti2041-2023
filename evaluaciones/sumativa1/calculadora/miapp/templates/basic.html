@@ -1,0 +1,58 @@
+{% extends "index.html" %}
+
+{% block title %}Calculadora Básica Django{% endblock %}
+
+{% block content %}
+<a href="/"><i class="fa-solid fa-chevron-left"></i> Volver</a>
+<br />
+<br />
+<form id="calc" method="post" action="/">
+    {% csrf_token %}
+    <input type="hidden" name="page" value="basic.html" />
+    <table>
+        <tr>
+            <td colspan="3"><input type="text" id="screen" name="screen" value="{{ resultado }}"></td>
+            <td><button type="button" onclick="clearScreen()">Cls</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(7, false)">7</button></td>
+            <td><button type="button" onclick="putValue(8, false)">8</button></td>
+            <td><button type="button" onclick="putValue(9, false)">9</button></td>
+            <td><button type="button" onclick="putValue('/', true)">/</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(4, false)">4</button></td>
+            <td><button type="button" onclick="putValue(5, false)">5</button></td>
+            <td><button type="button" onclick="putValue(6, false)">6</button></td>
+            <td><button type="button" onclick="putValue('*', true)">*</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue(1, false)">1</button></td>
+            <td><button type="button" onclick="putValue(2, false)">2</button></td>
+            <td><button type="button" onclick="putValue(3, false)">3</button></td>
+            <td><button type="button" onclick="putValue('-', true)">-</button></td>
+        </tr>
+        <tr>
+            <td><button type="button" onclick="putValue('.', false)">.</button></td>
+            <td><button type="button" onclick="putValue(0, false)">0</button></td>
+            <td><button type="submit">=</button></td>
+            <td><button type="button" onclick="putValue('+', true)">+</button></td>
+        </tr>
+    </table>
+</form>
+
+<script>
+    let hasOperation = false;
+
+    function clearScreen() {
+        document.getElementById('screen').value = '';
+    }
+
+    function putValue(value, isOperation) {
+        if (hasOperation && isOperation)
+            document.getElementById('calc').submit();
+        document.getElementById('screen').value += value;
+        hasOperation = isOperation;
+    }
+</script>
+{% endblock %}
