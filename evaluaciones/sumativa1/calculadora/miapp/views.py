@@ -1,5 +1,6 @@
 from django.shortcuts import render, HttpResponse
 from math import *
+from models import *
 
 # Se llama con un valor para la variable page por default, así diferenciamos la vista final.
 def index(request, page="index.html"):
