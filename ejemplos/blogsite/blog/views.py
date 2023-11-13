@@ -1,27 +1,56 @@
 from django.shortcuts import render
-from .models import Post, Hashtag
+from .models import Post, Category, Hashtag
 
-# Create your views here.
-def index(request, id = None):
-    posts = Post.objects.all().order_by("-fecha")
-    actual_post = None
 
-    if id:
-        actual_post = Post.objects.get(id = id)
+def index(request, post_id = None, category_id = None, hashtag_id = None):
+    # Obtenemos todas las categorías y las etiquetas
+    categories = Category.objects.all().order_by("nombre")
+    hashtags = Hashtag.objects.all().order_by("nombre")
+
+    # Obtenemos las publicaciones filtradas por categoría, etiqueta o mostrar todas
+    posts = None
+    if category_id:
+        posts = Post.objects.filter(categoria__id = category_id).order_by("-fecha")
+    elif hashtag_id:
+        posts = Post.objects.filter(etiquetas__id = hashtag_id).order_by("-fecha")
     else:
-        actual_post = posts[0]
-        id = actual_post.id
-    category = actual_post.categoria
-    hashtags = Hashtag.objects.filter(post__id = id)
+        posts = Post.objects.all().order_by("-fecha")
 
+    # Inicializamos el post actual por si no existe una selección válida
+    actual_post = None
+    post_autor = None
+    post_category = None
+    post_hashtags = None
+
+    # Definimos el post actual como el seleccionado actual o el último
+    if post_id:
+        actual_post = Post.objects.get(id = post_id)
+    else:
+        if len(posts) > 0:
+            actual_post = posts[0]
+            post_id = actual_post.id
+    if actual_post:
+        post_autor = actual_post.autor
+        post_category = actual_post.categoria
+        post_hashtags = Hashtag.objects.filter(post__id = post_id)
+
+    # Construimos el contexto a enviar al HTML
     context = {
+        "post_quantity": len(posts),
+        "post_list": posts,
+        "category_list": categories,
+        "hashtag_list": hashtags,
         "actual_post": {
             "post": actual_post,
-            "categpry": category,
-            "hashtags": hashtags
+            "author": post_autor,
+            "category": post_category,
+            "hashtags": post_hashtags
         },
-        "post_list": posts
+        "filters": {
+            "category_id": int(category_id or 0),
+            "hashtag_id": int(hashtag_id or 0)
+        }
     }    
-
-    print(context)
-    return render(request, 'index.html', context)
+    
+    # Enviamos a renderizar la pantalla
+    return render(request, 'blog.html', context)

@@ -1,0 +1,89 @@
+{% extends "template.html" %}
+
+{% block actual_post %}
+    <p>
+        <a href="/blog">Home</a>
+        {% if actual_post.post %}
+            &gt; {{ actual_post.post.titulo }}
+        {% endif %}                    
+    </p>
+    {% if actual_post.post %}
+    <div class="card">
+        <div class="card-header">
+            <h2 class="text-danger-emphasis">{{ actual_post.post.titulo }}</h2>
+        </div>
+        <div class="card-body">
+            <p class="card-text">{{ actual_post.post.texto }}</p>
+        </div>
+        <div class="card-footer text-body-secondary">
+            <i>
+                Publicado por {{ actual_post.author }} ({{ actual_post.post.fecha }})
+                <br />
+                Categoría: <a href="/blog/category/{{ actual_post.category.id }}">{{ actual_post.category.nombre }}</a>
+                <br />
+                Etiquetas: 
+                {% if actual_post.hashtags %}                            
+                    {% for hashtag in actual_post.hashtags %}
+                        <a href="/blog/hashtag/{{ hashtag.id }}">#{{ hashtag.nombre }}</a>
+                    {% endfor %}                                                    
+                {% else %}
+                    Sin etiquetas
+                {% endif %}
+            </i>
+        </div>
+    </div>
+    {% else %}
+    <p>No hay nada que mostrar</p>
+    {% endif %}
+{% endblock %}
+
+{% block post_list %}
+    <h4 class="text-danger-emphasis">Lista de publicaciones ({{ post_quantity }})</h4>
+    {% if post_list %}
+        <ul>
+        {% for post in post_list %}
+            {% if post.id == actual_post.post.id %}
+                <li>{{ post.titulo }}</li>
+            {% else %}
+                <li><a href="/blog/post/{{ post.id }}">{{ post.titulo }}</a></li>
+            {% endif %}
+        {% endfor %}                    
+        </ul>                
+    {% else %}
+        <p>No hay ninguna publicación para mostrar</p>
+    {% endif %}
+{% endblock %}
+
+{% block category_list %}
+    <h4 class="text-danger-emphasis">Categorías</h4>
+    {% if category_list %}
+        <ul>
+        {% for category in category_list %}
+            {% if category.id == filters.category_id %}
+                <li>{{ category.nombre }}</li>
+            {% else %}
+                <li><a href="/blog/category/{{ category.id }}">{{ category.nombre }}</a></li>
+            {% endif %}
+        {% endfor %}                    
+        </ul>                
+    {% else %}
+        <p>No hay ninguna categoría para mostrar</p>
+    {% endif %}
+{% endblock %}
+
+{% block hashtag_list %}
+    <h4 class="text-danger-emphasis">Etiquetas</h4>
+    {% if hashtag_list %}
+        <ul>
+        {% for hashtag in hashtag_list %}
+            {% if hashtag.id == filters.hashtag_id %}
+                <li>#{{ hashtag.nombre }}</li>
+            {% else %}
+                <li><a href="/blog/hashtag/{{ hashtag.id }}">#{{ hashtag.nombre }}</a></li>
+            {% endif %}
+        {% endfor %}                    
+        </ul>                
+    {% else %}
+        <p>No hay ninguna etiquetas para mostrar</p>
+    {% endif %}
+{% endblock %}
