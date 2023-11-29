@@ -15,7 +15,7 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.0/jquery.min.js"></script>
         <title>Cyberpunk Help Page v2.0</title>
     </head>
-    <body>
+    <body data-bs-theme="dark">
         <div id="section_header" class="container">
             {% block section_header %}
                 <h1 style="width: 100%; text-align: center; height: 50px;">
@@ -30,25 +30,25 @@
             {% block section_navigator %}
                 <ul class="nav nav-tabs nav-fill">
                     <li class="nav-item">
-                        <a class="nav-link" href="/">Home</a>
+                        <a class="nav-link{% if request.path == '/' %} active{% endif %}" href="{% url 'index' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="characters">Personajes</a>
+                        <a class="nav-link{% if '/characters' in request.path %} active{% endif %} disabled" href="{% url 'characters' %}">Personajes</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" href="/equipment">Armas y Equipo</a>
+                        <a class="nav-link{% if '/equipment' in request.path %} active{% endif %}" href="{% url 'equipment' %}">Armas y Equipo</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="drugs">Medicina y Drogas</a>
+                        <a class="nav-link{% if '/drugs' in request.path %} active{% endif %} disabled" href="{% url 'drugs' %}">Medicina y Drogas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="vehicles">Vehículos</a>
+                        <a class="nav-link{% if '/vehicles' in request.path %} active{% endif %} disabled" href="{% url 'vehicles' %}">Vehículos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="running">Netrunning</a>
+                        <a class="nav-link{% if '/netrunning' in request.path %} active{% endif %} disabled" href="{% url 'netrunning' %}">Netrunning</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="documents">Complementos</a>
+                        <a class="nav-link{% if '/complements' in request.path %} active{% endif %} disabled" href="{% url 'complements' %}">Complementos</a>
                     </li>
                 </ul>
             {% endblock %}

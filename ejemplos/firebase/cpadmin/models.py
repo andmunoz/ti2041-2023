@@ -6,10 +6,10 @@ class Category(models.Model):
     name = models.CharField(max_length=200)
     code = models.CharField(max_length=5, blank=True)
     description = models.CharField(max_length=1000, blank=True)
-    parent = models.ForeignKey("Category", on_delete=models.CASCADE, null=True)
+    parent = models.ForeignKey("Category", on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
-        return self.name
+        return self.name + " (" + self.code + ")"
     
     
 class Brand(models.Model):
@@ -23,8 +23,8 @@ class Brand(models.Model):
 class Availability(models.TextChoices): 
     EXCELLENT = 'E', _('Excelente')
     COMMON = 'C', _('Común')
-    POOR = 'P', _('Pobre')
-    RARE = 'R', _('Raro')
+    POOR = 'P', _('Mala')
+    RARE = 'R', _('Rara')
     ARMY = 'A', _('Solo Militares')
     EXPERIMENTAL = 'X', _('Experimental')
    
@@ -47,12 +47,12 @@ class Weapon(models.Model):
     category = models.ForeignKey("Category", on_delete=models.CASCADE)
     brand = models.ForeignKey("Brand", on_delete=models.CASCADE)
     availability = models.CharField(max_length=1, choices=Availability.choices, default=Availability.COMMON)
-    concealment = models.CharField(max_length=2, choices=Concealment.choices, default=Concealment.JACKET)
     accuracy = models.IntegerField()
+    concealment = models.CharField(max_length=2, choices=Concealment.choices, default=Concealment.JACKET)
     reliability = models.CharField(max_length=2, choices=Reliability.choices, default=Reliability.STANDARD)
-    range = models.IntegerField(blank=True, null=True)
     shots = models.IntegerField(blank=True, null=True)
     rof = models.IntegerField(blank=True, null=True)
+    range = models.IntegerField(blank=True, null=True)
     damage = models.CharField(max_length=20)
     weight = models.FloatField()
     cost = models.IntegerField()

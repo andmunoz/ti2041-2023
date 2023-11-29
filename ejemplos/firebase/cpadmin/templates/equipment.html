@@ -5,28 +5,28 @@
         <br />
         <h2>Armas y Equipo</h2>
         <div class="row">
-            <div class="col-sm">
+            <div class="col-3">
                 {% block section_content_navigator %}
                     <ul class="nav flex-column">
                         <li class="nav-item">
-                            <a class="nav-link" href="weapons">Armas</a>
+                            <a class="nav-link{% if '/weapons' in request.path %} active{% endif %}" href="{% url 'weapons' %}">Armas</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="armor">Blindaje</a>
+                            <a class="nav-link{% if '/armor' in request.path %} active{% endif %} disabled" href="armor">Blindaje</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="gear">Equipo</a>
+                            <a class="nav-link{% if '/gear' in request.path %} active{% endif %} disabled" href="gear">Equipo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="cyberware">Ciberequipo</a>
+                            <a class="nav-link{% if '/cyberware' in request.path %} active{% endif %} disabled" href="cyberware">Ciberequipo</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link disabled" href="clothes">Ropa</a>
+                            <a class="nav-link{% if '/clothes' in request.path %} active{% endif %} disabled" href="clothes">Ropa</a>
                         </li>
                     </ul>
                 {% endblock %}
             </div>
-            <div class="col-sm">
+            <div class="col-9">
                 {% block section_content_content%}{% endblock %}
             </div>
         </div>
