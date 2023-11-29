@@ -3,7 +3,7 @@
 {% block section_content_content %}
     <ul class="nav justify-content-end">
         <li class="nav-item">
-            <a class="btn btn-danger" href="#" data-bs-toggle="modal" data-bs-target="#addWeaponModal">
+            <a class="btn btn-success" href="#" data-bs-toggle="modal" data-bs-target="#addWeaponModal">
                 Nuevo <i class="fa-solid fa-arrow-up-right-from-square"></i>
             </a>
             <div class="modal fade" id="addWeaponModal" tabindex="-1" aria-labelledby="addWeaponModalLabel" aria-hidden="true">
@@ -115,7 +115,7 @@
                 </div>
             </div>
 
-            <a class="btn btn-secondary" href="#" data-bs-toggle="modal" data-bs-target="#uploadWeaponModal">
+            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#uploadWeaponModal">
                 Subir CSV <i class="fa-solid fa-upload"></i>
             </a>
             <div class="modal fade" id="uploadWeaponModal" tabindex="-1" aria-labelledby="uploadWeaponModalLabel" aria-hidden="true">
@@ -141,17 +141,65 @@
                     </div>
                 </div>
             </div>
-            <a class="btn btn-secondary disabled" href="#" data-bs-toggle="modal" data-bs-target="#downloadWeaponModal">
+            <a class="btn btn-primary" href="{% url 'weapons' %}/download">
                 Descargar CSV <i class="fa-solid fa-download"></i>
             </a>
 
-            <a class="btn btn-secondary disabled" href="{% url 'weapons' %}/upload">
-                Recargar FB <i class="fa-solid fa-arrows-rotate"></i>
+            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#refreshFromWeaponModal">
+                Recargar <i class="fa-solid fa-arrows-rotate"></i>
             </a>
+            <div class="modal fade" id="refreshFromWeaponModal" tabindex="-1" aria-labelledby="refreshFromWeaponModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{% url 'weapons' %}/refresh" method="POST">
+                            <input type="hidden" name="source" value="firebase"/>
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="refreshFromWeaponModalLabel">Recargar Modelo de Firebase</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    ¿Está seguro que quiere actualizar los datos locales con los que están en la base de datos de la nube?
+                                    Este proceso puede tardar varios minutos
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-primary">Sí</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
 
-            <a class="btn btn-secondary disabled" href="{% url 'weapons' %}/download">
-                Acualizar FB <i class="fa-solid fa-arrows-rotate"></i>
+            <a class="btn btn-primary" href="#" data-bs-toggle="modal" data-bs-target="#refreshToWeaponModal">
+                Acualizar <i class="fa-solid fa-arrows-rotate"></i>
             </a>
+            <div class="modal fade" id="refreshToWeaponModal" tabindex="-1" aria-labelledby="refreshToWeaponModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form action="{% url 'weapons' %}/refresh" method="POST">
+                            <input type="hidden" name="source" value="local"/>
+                            {% csrf_token %}
+                            <div class="modal-header">
+                                <h1 class="modal-title fs-5" id="refreshToWeaponModalLabel">Recargar Modelo Firebase</h1>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    ¿Está seguro que quiere actualizar los datos de la nube?
+                                    Este proceso puede tardar varios minutos y sobrescribirá los datos existentes.
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                <button type="submit" class="btn btn-primary">Sí</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
         </li>
     </ul>
     <br />
@@ -163,6 +211,7 @@
                 <th scope="col" class="text-center">Nombre</th>
                 <th scope="col" class="text-center">Categoría</th>
                 <th scope="col" class="text-center">Precio</th>
+                <th scope="col" class="text-center">&nbsp;</th>
             </tr>
         </thead>
         <tbody>
@@ -173,6 +222,36 @@
                         <td>{{ weapon.name }}</td>
                         <td>{{ weapon.category }}</td>
                         <td class="text-end">{{ weapon.cost|stringformat:"3d" }} creds</td>
+                        <td class="text-center">
+                            <button class="btn btn-primary"><i class="fa-solid fa-eye"></i></button>
+
+                            <button class="btn btn-success"><i class="fa-solid fa-pen-to-square"></i></button>
+
+                            <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#removeWeapon{{ weapon.id }}Modal"><i class="fa-solid fa-trash"></i></button>
+                            <div class="modal fade" id="removeWeapon{{ weapon.id }}Modal" tabindex="-1" aria-labelledby="removeWeapon{{ weapon.id }}ModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <form action="{% url 'weapons' %}/delete" method="POST">
+                                            <input type="hidden" name="source" value="firebase"/>
+                                            {% csrf_token %}
+                                            <div class="modal-header">
+                                                <h1 class="modal-title fs-5" id="removeWeapon{{ weapon.id }}ModalLabel">Eliminar {{ weapon.name }}</h1>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="mb-3">
+                                                    ¿Está seguro que quiere eliminar {{ weapon.name }}?
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                                                <button type="submit" class="btn btn-primary">Sí</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
                     </tr>
                 {% endfor %}
             {% else %}
