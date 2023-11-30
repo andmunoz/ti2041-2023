@@ -222,7 +222,7 @@
                         <td>{{ weapon.name }}</td>
                         <td>{{ weapon.category }}</td>
                         <td class="text-end">{{ weapon.cost|stringformat:"3d" }} creds</td>
-                        <td class="text-center">
+                        <td>
                             <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#viewWeapon{{ weapon.id }}Modal"><i class="fa-solid fa-eye"></i></button>
                             <div class="modal fade" id="viewWeapon{{ weapon.id }}Modal" tabindex="-1" aria-labelledby="viewWeapon{{ weapon.id }}ModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-lg">

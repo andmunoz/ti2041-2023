@@ -18,6 +18,7 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('', include('cpadmin.urls')),
-    path('admin/', admin.site.urls),
+    path('', include('cpadmin.urls')), # Include site
+    path('api/', include('api.urls')), # Include api
+    path('admin/', admin.site.urls), # Include admin
 ]

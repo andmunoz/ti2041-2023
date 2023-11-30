@@ -1,12 +1,12 @@
 from django.urls import path
-from . import views, api
+from . import views
 
 urlpatterns = [
     # Route to home
     path('', views.index, name='index'),
 
     # Routes to characters
-    path('', views.equipment_home, name='characters'),
+    path('characters/', views.equipment_home, name='characters'),
 
     # Routes to equipment
     path('equipment/', views.equipment_home, name='equipment'),
@@ -18,11 +18,15 @@ urlpatterns = [
     path('equipment/weapons/upload', views.weapons_upload),
     path('equipment/weapons/refresh', views.weapons_refresh),
 
-    path('', views.equipment_home, name='drugs'),
+    # Routes to drugs
+    path('drugs/', views.equipment_home, name='drugs'),
 
-    path('', views.equipment_home, name='vehicles'),
+    # Routes to vehicles
+    path('vehicles/', views.equipment_home, name='vehicles'),
 
-    path('', views.equipment_home, name='netrunning'),
+    # Routes to netrunning
+    path('netrunning/', views.equipment_home, name='netrunning'),
 
-    path('', views.equipment_home, name='complements'),
+    # Routes to complements
+    path('complements/', views.equipment_home, name='complements'),
 ]
