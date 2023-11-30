@@ -1,11 +1,14 @@
 from django.urls import path
-from . import views
+from . import views, api
 
 urlpatterns = [
+    # Route to home
     path('', views.index, name='index'),
 
+    # Routes to characters
     path('', views.equipment_home, name='characters'),
 
+    # Routes to equipment
     path('equipment/', views.equipment_home, name='equipment'),
     path('equipment/weapons', views.weapons_list, name='weapons'),
     path('equipment/weapons/create', views.weapons_create),
