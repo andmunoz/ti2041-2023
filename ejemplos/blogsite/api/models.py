@@ -15,7 +15,18 @@ class PostInputSchema(Schema):
     categoria: int
 
 
+class AuthorOutputSchema(Schema):
+    id: int
+    username: str
+
+
+class CategoryOutputSchema(Schema):
+    id: int
+    nombre: str
+
+
 class HashtagOutputSchema(Schema):
+    id: int
     nombre: str
 
 
@@ -24,6 +35,6 @@ class PostOutputSchema(Schema):
     titulo: str
     texto: str
     fecha: str
-    autor: str
-    categoria: str
-    # hastags: List[HashtagOutputSchema]
+    autor: AuthorOutputSchema
+    categoria: CategoryOutputSchema
+    hashtags: List[HashtagOutputSchema]

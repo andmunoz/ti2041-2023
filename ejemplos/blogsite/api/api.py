@@ -2,17 +2,20 @@ from ninja import NinjaAPI, Redoc
 from blog.models import Post, Category, Hashtag
 from django.contrib.auth.models import User
 from .models import PostInputSchema, PostOutputSchema, HashtagOutputSchema, MessageSchema
+from typing import List
 
+# Creamos un objeto para manipular la API
 api = NinjaAPI(docs=Redoc())
 
 
-@api.get("dummy")
+# Servicio dummy solo para comprobar que la API funciona
+@api.get("dummy", response={200:MessageSchema})
 def get_dummy(request):
-    results = { "hello": "world" }
+    results = { 'message': 'hello world' }
     return results
 
 
-@api.get("post")
+@api.get("post", response={200:List[PostOutputSchema]})
 def get_posts(request):
     posts = Post.objects.all().order_by("fecha")
     results = []
@@ -20,13 +23,24 @@ def get_posts(request):
         result = {
             "id": post.id,
             "titulo": post.titulo,
-            "fecha": post.fecha,
-            "autor": post.autor.username,
-            "categoria": post.categoria.id,
+            "texto": post.texto,
+            "fecha":  post.fecha.strftime("%d/%m/%Y"),
+            "autor": {
+                "id": post.autor.id,
+                "username": post.autor.username,
+            },
+            "categoria": {
+                "id": post.categoria.id,
+                "nombre": post.categoria.nombre,
+            },
             "hashtags": [],
         }
         for etiqueta in post.etiquetas.all():
-            result["hashtags"].append(etiqueta.nombre)
+            hashtag = {
+                "id": etiqueta.id, 
+                "nombre": etiqueta.nombre,
+            }
+            result["hashtags"].append(hashtag)
         results.append(result)
     return results
 
@@ -37,19 +51,28 @@ def get_post(request, id):
     if post is None or len(post) == 0:
         return 404, { 'message': 'Post not found' }
     post = post[0]
-    results = {
+    result = {
         "id": post.id,
         "titulo": post.titulo,
         "texto": post.texto,
-        "fecha": post.fecha.strftime("%d/%m/%Y"),
-        "autor": post.autor.username,
-        "categoria": post.categoria.nombre,
-        # "hashtags": [],
+        "fecha":  post.fecha.strftime("%d/%m/%Y"),
+        "autor": {
+            "id": post.autor.id,
+            "username": post.autor.username,
+        },
+        "categoria": {
+            "id": post.categoria.id,
+            "nombre": post.categoria.nombre,
+        },
+        "hashtags": [],
     }
-    # for etiqueta in post.etiquetas.all():
-        # results["hashtags"].append({"nombre": etiqueta.nombre})
-    print(results)
-    return results
+    for etiqueta in post.etiquetas.all():
+        hashtag = {
+            "id": etiqueta.id, 
+            "nombre": etiqueta.nombre,
+        }
+        result["hashtags"].append(hashtag)
+    return result
     
     
 @api.post("post", response={200:MessageSchema, 404:MessageSchema})
