@@ -1,0 +1,11 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "name": "Sqlite",
+            "database": "/home/andmunoz/Documentos/Academico/INACAP/ti2041-2023/ejemplos/blogsite/db.sqlite3"
+        }
+    ],
+    "sqltools.useNodeRuntime": true
+}
